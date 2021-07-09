@@ -113,7 +113,7 @@ CONFIG_FRAMEWORK_DIR = ../framework
 FRAMEWORK_LIB_DIR := ${shell if [ -r $(CONFIG_FRAMEWORK_DIR)/Makefile ]; then echo "$(CONFIG_FRAMEWORK_DIR)"; fi}
 
 ifeq ($(CONFIG_EXTERNAL_DIR),)
-CONFIG_EXTERNAL_DIR = ../external
+CONFIG_EXTERNAL_DIR = ../../external
 endif
 EXTDIR := ${shell if [ -r $(CONFIG_EXTERNAL_DIR)/Makefile ]; then echo "$(CONFIG_EXTERNAL_DIR)"; fi}
 
@@ -371,7 +371,7 @@ ifneq ($(CONFIG_ARCH_CHIP),)
 	$(Q) $(DIRLINK) $(TOPDIR)/$(ARCH_INC)/$(CONFIG_ARCH_CHIP) include/arch/chip
 endif
 
-dirlinks: include/arch include/arch/board include/arch/chip $(ARCH_SRC)/board $(ARCH_SRC)/chip include/apps
+dirlinks: include/arch include/arch/chip $(ARCH_SRC)/chip include/apps #include/arch/board $(ARCH_SRC)/board
 
 # context
 #
@@ -729,3 +729,20 @@ smartfs: include/tinyara/config.h
 
 product_bin: check_context include/tinyara/config.h include/tinyara/version.h include/math.h include/float.h include/stdarg.h include/arch include/arch/chip
 	$(Q) $(MAKE) -C $(LOADABLE_APPDIR) TOPDIR="$(TOPDIR)" LOADABLEDIR="${LOADABLE_APPDIR}" LIBRARIES_DIR="$(LIBRARIES_DIR)" USERLIBS="$(USERLIBS)" all KERNEL=n
+
+common_bin: context $(USERLIBS)
+	$(Q) $(LD) -r -o $(OUTBIN_DIR)/$(CONFIG_COMMON_BINARY_NAME) -T $(TOPDIR)/userspace/userspace_apps.ld -L $(LIBRARIES_DIR) --start-group $(USERLIBS) $(LIBGCC) --end-group $$(cat $(OUTBIN_DIR)/lib_symbols.txt)
+	$(Q) if [ "`nm -u $(OUTBIN_DIR)/$(CONFIG_COMMON_BINARY_NAME) | wc -l`" != "0" ]; then \
+		echo "Undefined Symbols in Common binary"; \
+		nm -u -l $(OUTBIN_DIR)/$(CONFIG_COMMON_BINARY_NAME); \
+		rm $(OUTBIN_DIR)/$(CONFIG_COMMON_BINARY_NAME); \
+		exit 1; \
+	fi
+	$(Q) $(STRIP) -g -o $(OUTBIN_DIR)/$(CONFIG_COMMON_BINARY_NAME) $(OUTBIN_DIR)/$(CONFIG_COMMON_BINARY_NAME)
+	$(Q) $(OBJCOPY) --remove-section .comment $(OUTBIN_DIR)/$(CONFIG_COMMON_BINARY_NAME)
+	$(Q) if [ ! -d "$(TOPDIR)/../tools/fs/contents-smartfs" ]; then \
+		mkdir -p "$(TOPDIR)/../tools/fs/contents-smartfs"; \
+		mkdir -p "$(TOPDIR)/../tools/fs/contents-smartfs/$(CONFIG_ARCH_BOARD)"; \
+		mkdir -p "$(TOPDIR)/../tools/fs/contents-smartfs/$(CONFIG_ARCH_BOARD)/base-files"; \
+	fi
+	$(Q) cp $(OUTBIN_DIR)/$(CONFIG_COMMON_BINARY_NAME) $(TOPDIR)/../tools/fs/contents-smartfs/$(CONFIG_ARCH_BOARD)/base-files/
