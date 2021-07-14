@@ -735,6 +735,8 @@ kernel: context include/arch/board $(ARCH_SRC)/board $(TINYARALIBS)
 
 kernel_bin: kernel post
 
+common_libs: context include/arch/board $(ARCH_SRC)/board $(COMMONLIBS)
+
 product_bin: check_context include/tinyara/config.h include/tinyara/version.h include/math.h include/float.h include/stdarg.h include/arch include/arch/chip
 	$(Q) $(MAKE) -C $(LOADABLE_APPDIR) TOPDIR="$(TOPDIR)" LOADABLEDIR="${LOADABLE_APPDIR}" LIBRARIES_DIR="$(LIBRARIES_DIR)" USERLIBS="$(USERLIBS)" all KERNEL=n
 

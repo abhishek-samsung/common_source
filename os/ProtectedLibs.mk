@@ -73,6 +73,8 @@ USERLIBS  += $(LIBRARIES_DIR)$(DELIM)libproxies$(LIBEXT) $(LIBRARIES_DIR)$(DELIM
 USERLIBS  += $(LIBRARIES_DIR)$(DELIM)libumm$(LIBEXT) $(LIBRARIES_DIR)$(DELIM)libuarch$(LIBEXT)
 USERLIBS  += $(LIBRARIES_DIR)$(DELIM)libuwque$(LIBEXT) $(LIBRARIES_DIR)$(DELIM)libframework$(LIBEXT)
 
+COMMONLIBS += $(LIBRARIES_DIR)$(DELIM)libproxies$(LIBEXT) $(LIBRARIES_DIR)$(DELIM)libumm$(LIBEXT) $(LIBRARIES_DIR)$(DELIM)libuwque$(LIBEXT)
+
 # Add libraries for C++ support.  CXX, CXXFLAGS, and COMPILEXX must
 # be defined in Make.defs for this to work!
 
