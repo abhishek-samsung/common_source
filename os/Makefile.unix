@@ -624,7 +624,7 @@ subdir_clean:
 	done
 	$(Q) $(MAKE) -C tools -f Makefile.host TOPDIR="$(TOPDIR)" clean
 
-clean: subdir_clean
+clean: subdir_clean unlink_files
 	$(call DELFILE, $(OUTBIN_DIR)/*)
 	$(call DELFILE, _SAVED_APPS_config)
 	$(call DELFILE, tinyara-export*)
@@ -727,6 +727,12 @@ smartfs: include/tinyara/config.h
 	$(Q) ./../tools/nxfuse/mknxfuse.sh
 	$(Q) ./../tools/nxfuse/mksmartfsimg.sh
 
+link_files: 
+	$(Q) ../.././link.sh
+
+unlink_files: 
+	$(Q) ../.././unlink.sh
+
 kernel: context include/arch/board $(ARCH_SRC)/board $(TINYARALIBS)
 	$(Q) $(MAKE) -C $(ARCH_SRC) TOPDIR="$(TOPDIR)" OUTBIN_DIR="$(OUTBIN_DIR)" LIBRARIES_DIR="$(LIBRARIES_DIR)" EXTRA_OBJS="$(EXTRA_OBJS)" LINKLIBS="$(LINKLIBS)" EXTRADEFINES=$(KDEFINE) $(BIN)
 	$(Q) if [ -w /tftpboot ] ; then \
@@ -740,7 +746,7 @@ common_libs: context include/arch/board $(ARCH_SRC)/board $(COMMONLIBS)
 product_bin: check_context include/tinyara/config.h include/tinyara/version.h include/math.h include/float.h include/stdarg.h include/arch include/arch/chip
 	$(Q) $(MAKE) -C $(LOADABLE_APPDIR) TOPDIR="$(TOPDIR)" LOADABLEDIR="${LOADABLE_APPDIR}" LIBRARIES_DIR="$(LIBRARIES_DIR)" USERLIBS="$(USERLIBS)" all KERNEL=n
 
-common_bin: context $(USERLIBS)
+common_bin: link_files context $(USERLIBS)
 	$(Q) cp ../build/output/precompiled_libraries/lib* ../build/output/libraries/
 	$(Q) cp ../build/output/precompiled_libraries/lib_symbols.txt ../build/output/bin
 	$(Q) echo "coppied precompiled libraries"
