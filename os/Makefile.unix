@@ -733,7 +733,7 @@ link_files:
 unlink_files: 
 	$(Q) ../.././unlink.sh
 
-kernel: context include/arch/board $(ARCH_SRC)/board $(TINYARALIBS)
+kernel: link_files context include/arch/board $(ARCH_SRC)/board $(TINYARALIBS)
 	$(Q) $(MAKE) -C $(ARCH_SRC) TOPDIR="$(TOPDIR)" OUTBIN_DIR="$(OUTBIN_DIR)" LIBRARIES_DIR="$(LIBRARIES_DIR)" EXTRA_OBJS="$(EXTRA_OBJS)" LINKLIBS="$(LINKLIBS)" EXTRADEFINES=$(KDEFINE) $(BIN)
 	$(Q) if [ -w /tftpboot ] ; then \
 		cp -f $(BIN) /tftpboot/$(BIN_EXE).${CONFIG_ARCH}; \
@@ -743,7 +743,7 @@ kernel_bin: kernel post
 
 common_libs: context include/arch/board $(ARCH_SRC)/board $(COMMONLIBS)
 
-product_bin: check_context include/tinyara/config.h include/tinyara/version.h include/math.h include/float.h include/stdarg.h include/arch include/arch/chip
+product_bin: link_files check_context include/tinyara/config.h include/tinyara/version.h include/math.h include/float.h include/stdarg.h include/arch include/arch/chip
 	$(Q) $(MAKE) -C $(LOADABLE_APPDIR) TOPDIR="$(TOPDIR)" LOADABLEDIR="${LOADABLE_APPDIR}" LIBRARIES_DIR="$(LIBRARIES_DIR)" USERLIBS="$(USERLIBS)" all KERNEL=n
 
 common_bin: link_files context $(USERLIBS)
