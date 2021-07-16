@@ -100,17 +100,17 @@ endif
 # will be built if APPDIR is defined.  APPDIR will be defined if a directory containing
 # a Makefile is found at the path provided by CONFIG_APPS_DIR
 
-ifeq ($(CONFIG_APPS_DIR),)
-CONFIG_APPS_DIR = ../apps
-endif
-APPDIR := ${shell if [ -r $(CONFIG_APPS_DIR)/Makefile ]; then echo "$(CONFIG_APPS_DIR)"; fi}
+#ifeq ($(CONFIG_APPS_DIR),)
+CONFIG_APPS_DIR = ../../apps
+#endif
+APPDIR := ${shell if [ -r $(CONFIG_APPS_DIR)/Makefile ]; then echo "../apps"; fi}
 
-LOADABLE_APPDIR := ${shell if [ -r ../loadable_apps/Makefile ]; then echo "../loadable_apps"; fi}
+LOADABLE_APPDIR := ${shell if [ -r ../../loadable_apps/Makefile ]; then echo "../loadable_apps"; fi}
 
 #ifeq ($(CONFIG_FRAMEWORK_DIR),)
-CONFIG_FRAMEWORK_DIR = ../framework
+CONFIG_FRAMEWORK_DIR = ../../framework
 #endif
-FRAMEWORK_LIB_DIR := ${shell if [ -r $(CONFIG_FRAMEWORK_DIR)/Makefile ]; then echo "$(CONFIG_FRAMEWORK_DIR)"; fi}
+FRAMEWORK_LIB_DIR := ${shell if [ -r $(CONFIG_FRAMEWORK_DIR)/Makefile ]; then echo "../framework"; fi}
 
 ifeq ($(CONFIG_EXTERNAL_DIR),)
 CONFIG_EXTERNAL_DIR = ../../external
