@@ -147,8 +147,8 @@ FSDIRS += binfmt
 endif
 CONTEXTDIRS = $(APPDIR)
 CONTEXTDIRS += $(TOOLSDIR)
-#CONTEXTDIRS += mm
-#CONTEXTDIRS += wqueue
+CONTEXTDIRS += mm
+CONTEXTDIRS += wqueue
 #ifeq ($(CONFIG_ENABLE_IOTIVITY),y)
 #CONTEXTDIRS += $(EXTDIR)$(DELIM)iotivity
 #endif
@@ -188,7 +188,7 @@ endif
 
 ifeq ($(CONFIG_LIB_SYSCALL),y)
 NONFSDIRS += syscall
-#CONTEXTDIRS += syscall
+CONTEXTDIRS += syscall
 USERDIRS += syscall
 else
 OTHERDIRS += syscall
