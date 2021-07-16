@@ -767,3 +767,4 @@ common_bin: link_files context $(USERLIBS)
 		mkdir -p "$(TOPDIR)/../tools/fs/contents-smartfs/$(CONFIG_ARCH_BOARD)/base-files"; \
 	fi
 	$(Q) cp $(OUTBIN_DIR)/$(CONFIG_COMMON_BINARY_NAME) $(TOPDIR)/../tools/fs/contents-smartfs/$(CONFIG_ARCH_BOARD)/base-files/
+	$(Q) cp -r ../build/output/precompiled_libraries/bins/ $(TOPDIR)/../tools/fs/contents-smartfs/$(CONFIG_ARCH_BOARD)/base-files/
