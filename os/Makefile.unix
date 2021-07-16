@@ -387,7 +387,7 @@ context: check_context include/tinyara/config.h include/tinyara/version.h includ
 	fi
 	$(call DELFILE, $(APPDIR)/builtin/registry/*.?dat)
 	$(Q) for dir in $(CONTEXTDIRS) ; do \
-		if [ -d $$dir ]; then \ # make context for only the relavent dirs.
+		if [ -d $$dir ]; then \
 			$(MAKE) -C $$dir TOPDIR="$(TOPDIR)" EXTDIR="$(EXTDIR)" context; \
 		fi \
 	done
@@ -743,7 +743,7 @@ kernel: link_files context include/arch/board $(ARCH_SRC)/board $(TINYARALIBS)
 
 kernel_bin: kernel post
 
-common_libs: context include/arch/board $(ARCH_SRC)/board $(COMMONLIBS)
+common_libs: link_files context include/arch/board $(ARCH_SRC)/board $(COMMONLIBS)
 
 product_bin: link_files check_context include/tinyara/config.h include/tinyara/version.h include/math.h include/float.h include/stdarg.h include/arch include/arch/chip
 	$(Q) $(MAKE) -C $(LOADABLE_APPDIR) TOPDIR="$(TOPDIR)" LOADABLEDIR="${LOADABLE_APPDIR}" LIBRARIES_DIR="$(LIBRARIES_DIR)" USERLIBS="$(USERLIBS)" all KERNEL=n
